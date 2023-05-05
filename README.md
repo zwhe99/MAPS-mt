@@ -1,10 +1,32 @@
-## MAPS: Multi-Aspect Prompting and Selection
+## 🗺️ MAPS: Multi-Aspect Prompting and Selection
 
-This is the implementaion of our paper:
-
-```
+Implementaion of our [paper](https://arxiv.org/abs/tdb):
 
 ```
+Exploring Human-Like Translation Strategy with Large Language Models
+```
+
+
+
+## MAPS
+**Motivation**
+
+<p align="center">
+<img src="imgs/intro.png" alt="intro"  width="350" />
+</p>
+The difference between machine and human translation in an English-Chinese example. Typical neural machine translation is a source-target mapping process, while human translators can take complex steps to ensure the quality and accuracy of the translation
+
+
+
+**MAPS Framework**
+
+<p align="center">
+<img src="imgs/method.png" alt="method"  width="800" />
+</p>
+
+MAPS aims to enable LLMs to mimic the human translation process by multi-aspect prompting and selection.
+
+
 
 ## Dependencies
 
@@ -13,7 +35,7 @@ This is the implementaion of our paper:
   ```shell
   wget https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-comet-qe-da.tar.gz
   tar -xf wmt21-comet-qe-da.tar.gz -C eval_ckpt/
-
+  
   wget https://storage.googleapis.com/bleurt-oss-21/BLEURT-20.zip .
   unzip -d eval_ckpt/ BLEURT-20.zip
   ```
@@ -27,6 +49,8 @@ This is the implementaion of our paper:
   ```
   pip3 install -r requirements.txt
   ```
+
+
 
 ## Run
 
@@ -44,6 +68,8 @@ This is the implementaion of our paper:
 `sh run-maps.sh `
 
 *Note: The translation results have already been generated and saved in the `output` directory. Therefore, the scripts won't repeat the inference. If you want to regenerate the results, simply delete the contents within the `output` directory.*
+
+
 
 ## Evaluation
 
