@@ -16,7 +16,7 @@ Exploring Human-Like Translation Strategy with Large Language Models
 </p>
 The difference between machine and human translation in an English-Chinese example. Typical neural machine translation is a source-target mapping process, while human translators can take complex steps to ensure the quality and accuracy of the translation.
 
-<br>
+<br><br>
 
 **MAPS Framework**
 
