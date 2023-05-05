@@ -44,6 +44,7 @@ done
 
 # text-davinci-003
 model_name=text-davinci-003
+mkdir -p $OUTPUT/$model_name
 for lp in ${all_lang_pairs[@]}
 do
     echo $model_name $lp
@@ -62,6 +63,7 @@ done
 
 # alpaca-7b
 model_name=alpaca-7b
+mkdir -p $OUTPUT/$model_name
 for lp in ${all_lang_pairs[@]}
 do
     echo $model_name $lp
@@ -113,6 +115,7 @@ done
 
 # text-davinci-003
 model_name=text-davinci-003
+mkdir -p $OUTPUT/$model_name
 for lp in ${all_lang_pairs[@]}
 do
     echo $model_name $lp
@@ -131,6 +134,7 @@ done
 
 # alpaca-7b
 model_name=alpaca-7b
+mkdir -p $OUTPUT/$model_name
 for lp in ${all_lang_pairs[@]}
 do
     echo $model_name $lp
