@@ -8,153 +8,149 @@ RAW=$DATA/raw
 OUTPUT=$WS/output
 SCRIPT=$WS/scripts
 MODEL=$WS/model
-ALPACA_CKPT=/apdcephfs_cq2/share_916081/timurhe/workspaces/MTLLM/llama-ft-7b.alpaca.8-A100-bs1/checkpoint-1218
+ALPACA_CKPT=YOUR_ALPACA_CKPT
 all_lang_pairs=(en-zh zh-en en-de de-en en-ja ja-en de-fr fr-de)
 test_name=wmt22
 BS=6
 
-# # >>>>>>> Step1: Knowledge Minging >>>>>>>
-# for lp in ${all_lang_pairs[@]}
-# do
-#     echo $lp
-#     src=${lp%%-*}
-#     tgt=${lp##*-}
+# >>>>>>> Step1: Knowledge Minging >>>>>>>
+for lp in ${all_lang_pairs[@]}
+do
+	echo $lp
+    src=${lp%%-*}
+    tgt=${lp##*-}
 
-#     python3 $DATA/format-ask-kw.py \
-#         -w $WS \
-#         -tn wmt22 \
-#         --seed 0 \
-#         -s $src \
-#         -t $tgt
+    python3 $DATA/format-ask-kw.py \
+        -w $WS \
+        -tn wmt22 \
+        --seed 0 \
+        -s $src \
+        -t $tgt
 
-#     python3 $DATA/format-ask-topic.py \
-#         -w $WS \
-#         -tn wmt22 \
-#         --seed 0 \
-#         -s $src \
-#         -t $tgt
+    python3 $DATA/format-ask-topic.py \
+        -w $WS \
+        -tn wmt22 \
+        --seed 0 \
+        -s $src \
+        -t $tgt
 
-#     python3 $DATA/format-ask-demo.py \
-#         -w $WS \
-#         -tn wmt22 \
-#         --seed 0 \
-#         -s $src \
-#         -t $tgt
-# done
+    python3 $DATA/format-ask-demo.py \
+        -w $WS \
+        -tn wmt22 \
+        --seed 0 \
+        -s $src \
+        -t $tgt
+done
 
-# # text-davinci-003
-# model_name=text-davinci-003
-# for lp in ${all_lang_pairs[@]}
-# do
-#     echo $model_name $lp
-#     src=${lp%%-*}
-#     tgt=${lp##*-}
+# text-davinci-003
+model_name=text-davinci-003
+for lp in ${all_lang_pairs[@]}
+do
+    echo $model_name $lp
+    src=${lp%%-*}
+    tgt=${lp##*-}
 
-#     for know in kw topic demo
-#     do
-#         python3 $WS/model/openai/translate.py \
-#             --model-name $model_name \
-#             -i $FORMAT/$test_name.$lp.$src.5-shot.ask-$know \
-#             -o $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know.trans \
-#             --temperature 0
-#     done
-# done
+    for know in kw topic demo
+    do
+        python3 $WS/model/openai/translate.py \
+            --model-name $model_name \
+            -i $FORMAT/$test_name.$lp.$src.5-shot.ask-$know \
+            -o $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know.trans \
+            --temperature 0
+    done
+done
 
-# # alpaca-7b
-# model_name=alpaca-7b
-# for lp in ${all_lang_pairs[@]}
-# do
-#     echo $model_name $lp
-#     src=${lp%%-*}
-#     tgt=${lp##*-}
+# alpaca-7b
+model_name=alpaca-7b
+for lp in ${all_lang_pairs[@]}
+do
+    echo $model_name $lp
+    src=${lp%%-*}
+    tgt=${lp##*-}
 
-#     for know in kw topic demo
-#     do
-#         python3 $WS/model/alpaca/translate.py \
-#             --model-name-or-path $ALPACA_CKPT \
-#             -i $FORMAT/$test_name.$lp.$src.5-shot.ask-$know \
-#             -o $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know \
-#             --search-algorithm beam \
-#             --batch $BS \
-#             --temperature 0
-#         cat $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know | python3 $SCRIPT/alpaca-post-process.py > $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know.trans
-#     done
-# done
-# # <<<<<<< Step1: Knowledge Minging <<<<<<<
-
-
-
-# # >>>>>>> Step2: Knowledge Integration >>>>>>>>
-# for lp in ${all_lang_pairs[@]}
-# do
-#     echo $lp
-#     src=${lp%%-*}
-#     tgt=${lp##*-}
-
-#     for know in kw topic demo
-#     do
-#         python3 $DATA/format-$know.py \
-#             -w $WS \
-#             -tn wmt22 \
-#             -m text-davinci-003 \
-#             --seed 0 \
-#             -s $src \
-#             -t $tgt
-
-#         python3 $DATA/format-$know.py \
-#             -w $WS \
-#             -tn wmt22 \
-#             -m alpaca-7b \
-#             --seed 0 \
-#             -s $src \
-#             -t $tgt
-#     done
-# done
-
-# # text-davinci-003
-# model_name=text-davinci-003
-# for lp in ${all_lang_pairs[@]}
-# do
-#     echo $model_name $lp
-#     src=${lp%%-*}
-#     tgt=${lp##*-}
-
-#     for know in kw topic demo
-#     do
-#         python3 $WS/model/openai/translate.py \
-#             --model-name $model_name \
-#             -i $FORMAT/with-knowledge/$model_name/$test_name.$lp.$src.$know.0-seed \
-#             -o $OUTPUT/$model_name/$test_name.$lp.$tgt.$know.0-seed.trans \
-#             --temperature 0
-#     done
-# done
-
-# # alpaca-7b
-# model_name=alpaca-7b
-# for lp in ${all_lang_pairs[@]}
-# do
-#     echo $model_name $lp
-#     src=${lp%%-*}
-#     tgt=${lp##*-}
-
-#     for know in kw topic demo
-#     do
-#         python3 $WS/model/alpaca/translate.py \
-#             --model-name-or-path $ALPACA_CKPT \
-#             -i $FORMAT/with-knowledge/$model_name/$test_name.$lp.$src.$know.0-seed \
-#             -o $OUTPUT/$model_name/$test_name.$lp.$tgt.$know.0-seed.trans \
-#             --search-algorithm beam \
-#             --batch $BS \
-#             --temperature 0
-#     done
-# done
-# # <<<<<<< Step2: Knowledge Integration <<<<<<<
+    for know in kw topic demo
+    do
+        python3 $WS/model/alpaca/translate.py \
+            --model-name-or-path $ALPACA_CKPT \
+            -i $FORMAT/$test_name.$lp.$src.5-shot.ask-$know \
+            -o $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know \
+            --search-algorithm beam \
+            --batch $BS \
+            --temperature 0
+        cat $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know | python3 $SCRIPT/alpaca-post-process.py > $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know.trans
+    done
+done
+# <<<<<<< Step1: Knowledge Minging <<<<<<<
 
 
-# wget https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-comet-qe-da.tar.gz
-# tar -xf wmt21-comet-qe-da.tar.gz -C eval_ckpt/
-# wget https://storage.googleapis.com/bleurt-oss-21/BLEURT-20.zip .
-# unzip -d eval_ckpt/ BLEURT-20.zip 
+
+# >>>>>>> Step2: Knowledge Integration >>>>>>>>
+for lp in ${all_lang_pairs[@]}
+do
+    echo $lp
+    src=${lp%%-*}
+    tgt=${lp##*-}
+
+    for know in kw topic demo
+    do
+        python3 $DATA/format-$know.py \
+            -w $WS \
+            -tn wmt22 \
+            -m text-davinci-003 \
+            --seed 0 \
+            -s $src \
+            -t $tgt
+
+        python3 $DATA/format-$know.py \
+            -w $WS \
+            -tn wmt22 \
+            -m alpaca-7b \
+            --seed 0 \
+            -s $src \
+            -t $tgt
+    done
+done
+
+# text-davinci-003
+model_name=text-davinci-003
+for lp in ${all_lang_pairs[@]}
+do
+    echo $model_name $lp
+    src=${lp%%-*}
+    tgt=${lp##*-}
+
+    for know in kw topic demo
+    do
+        python3 $WS/model/openai/translate.py \
+            --model-name $model_name \
+            -i $FORMAT/with-knowledge/$model_name/$test_name.$lp.$src.$know.0-seed \
+            -o $OUTPUT/$model_name/$test_name.$lp.$tgt.$know.0-seed.trans \
+            --temperature 0
+    done
+done
+
+# alpaca-7b
+model_name=alpaca-7b
+for lp in ${all_lang_pairs[@]}
+do
+    echo $model_name $lp
+    src=${lp%%-*}
+    tgt=${lp##*-}
+
+    for know in kw topic demo
+    do
+        python3 $WS/model/alpaca/translate.py \
+            --model-name-or-path $ALPACA_CKPT \
+            -i $FORMAT/with-knowledge/$model_name/$test_name.$lp.$src.$know.0-seed \
+            -o $OUTPUT/$model_name/$test_name.$lp.$tgt.$know.0-seed.trans \
+            --search-algorithm beam \
+            --batch $BS \
+            --temperature 0
+    done
+done
+# <<<<<<< Step2: Knowledge Integration <<<<<<<
+
+
 
 # >>>>>>> Step3: Knowledge Selection >>>>>>>>
 # text-davinci-003

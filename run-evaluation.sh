@@ -1,5 +1,6 @@
 set -e
 set -u
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib/
 
 BASEDIR=$(realpath `dirname $0`)
 WS=$BASEDIR
@@ -95,14 +96,14 @@ do
         done
 
         echo "BLEURT: $lp $model_name"
-        python3 $SCRIPTS_DIR/score.py \
+        python3 $SCRIPT/score.py \
             --sys ${CANDS[@]} \
             --src $src_file \
             --ref $ref_file \
             --metric bleurt \
             --batch-size $BATCH_SIZE
 
-        python3 $SCRIPTS_DIR/compare.py \
+        python3 $SCRIPT/compare.py \
             -t ${CANDS[@]} \
             -s $src_file \
             -r $ref_file \

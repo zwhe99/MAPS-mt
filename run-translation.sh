@@ -8,7 +8,7 @@ RAW=$DATA/raw
 OUTPUT=$WS/output
 SCRIPT=$WS/scripts
 MODEL=$WS/model
-ALPACA_CKPT=/apdcephfs_cq2/share_916081/timurhe/workspaces/MTLLM/llama-ft-7b.alpaca.8-A100-bs1/checkpoint-1218
+ALPACA_CKPT=YOUR_ALPACA_CKPT
 all_lang_pairs=(en-zh zh-en en-de de-en en-ja ja-en de-fr fr-de)
 test_name=wmt22
 BS=6
@@ -92,26 +92,26 @@ do
         src=${lp%%-*}
         tgt=${lp##*-}
         python3 $SCRIPT/knowledge-selection.py \
-            --sys   $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.smp1.0-shot.trans \
-                    $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.smp2.0-shot.trans \
-                    $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.smp3.0-shot.trans \
-                    $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.0-shot.trans \
+            --sys   $OUTPUT/$model_name/wmt22.$lp.$tgt.smp1.0-shot.trans \
+                    $OUTPUT/$model_name/wmt22.$lp.$tgt.smp2.0-shot.trans \
+                    $OUTPUT/$model_name/wmt22.$lp.$tgt.smp3.0-shot.trans \
+                    $OUTPUT/$model_name/wmt22.$lp.$tgt.0-shot.trans \
             --src   $RAW/wmt22.$lp.$src \
             --ref   $RAW/wmt22.$lp.$tgt \
-            --out   $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.rerank.0-seed.trans \
+            --out   $OUTPUT/$model_name/wmt22.$lp.$tgt.rerank.0-seed.trans \
             --src-lang $src --tgt-lang $tgt \
             -bs     400 \
             --metric comet_qe \
             --comet-qe-model-name wmt21-comet-qe-da
 
         python3 $SCRIPT/knowledge-selection.py \
-            --sys   $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.smp1.0-shot.trans \
-                    $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.smp2.0-shot.trans \
-                    $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.smp3.0-shot.trans \
-                    $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.0-shot.trans \
+            --sys   $OUTPUT/$model_name/wmt22.$lp.$tgt.smp1.0-shot.trans \
+                    $OUTPUT/$model_name/wmt22.$lp.$tgt.smp2.0-shot.trans \
+                    $OUTPUT/$model_name/wmt22.$lp.$tgt.smp3.0-shot.trans \
+                    $OUTPUT/$model_name/wmt22.$lp.$tgt.0-shot.trans \
             --src   $RAW/wmt22.$lp.$src \
             --ref   $RAW/wmt22.$lp.$tgt \
-            --out   $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.rerank_bound.0-seed.trans \
+            --out   $OUTPUT/$model_name/wmt22.$lp.$tgt.rerank_bound.0-seed.trans \
             --src-lang $src --tgt-lang $tgt \
             -bs     400 \
             --metric comet \
