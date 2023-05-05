@@ -1,2 +1,7 @@
 cache/ filter=lfs diff=lfs merge=lfs -text
 eval_ckpt/ filter=lfs diff=lfs merge=lfs -text
+cache/comet filter=lfs diff=lfs merge=lfs -text
+cache/bleurt filter=lfs diff=lfs merge=lfs -text
+eval_ckpt/models--Unbabel--wmt22-comet-da filter=lfs diff=lfs merge=lfs -text
+eval_ckpt/wmt21-comet-qe-da filter=lfs diff=lfs merge=lfs -text
+eval_ckpt/BLEURT-20 filter=lfs diff=lfs merge=lfs -text
