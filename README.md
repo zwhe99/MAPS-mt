@@ -3,8 +3,7 @@
 This is the implementaion of our paper:
 
 ```
-Bridging the Data Gap between Training and Inference for Unsupervised Neural Machine Translation
-Zhiwei He*, Xing Wang, Rui Wang, Shuming Shi, Zhaopeng Tu
+
 ```
 
 ## Dependencies
@@ -30,6 +29,8 @@ Zhiwei He*, Xing Wang, Rui Wang, Shuming Shi, Zhaopeng Tu
   ```
 
 ## Run
+
+**Preparation**
 
 * Set your openai API_KEY in `model/openai/translate.py`
 * Set Alpaca checkpoint file in `run-maps.sh` and `run-translation.sh`
