@@ -14,9 +14,9 @@ Exploring Human-Like Translation Strategy with Large Language Models
 <p align="center">
 <img src="imgs/intro.png" alt="intro"  width="350" />
 </p>
-The difference between machine and human translation in an English-Chinese example. Typical neural machine translation is a source-target mapping process, while human translators can take complex steps to ensure the quality and accuracy of the translation
+The difference between machine and human translation in an English-Chinese example. Typical neural machine translation is a source-target mapping process, while human translators can take complex steps to ensure the quality and accuracy of the translation.
 
-
+<br>
 
 **MAPS Framework**
 
@@ -26,7 +26,7 @@ The difference between machine and human translation in an English-Chinese examp
 
 MAPS aims to enable LLMs to mimic the human translation process by multi-aspect prompting and selection.
 
-
+<br>
 
 ## Dependencies
 
@@ -50,7 +50,7 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
   pip3 install -r requirements.txt
   ```
 
-
+<br>
 
 ## Run
 
@@ -69,7 +69,7 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
 
 *Note: The translation results have already been generated and saved in the `output` directory. Therefore, the scripts won't repeat the inference. If you want to regenerate the results, simply delete the contents within the `output` directory.*
 
-
+<br>
 
 ## Evaluation
 
