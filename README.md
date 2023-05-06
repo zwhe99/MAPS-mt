@@ -65,7 +65,7 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
 
 **Run other methods**
 
-`sh run-maps.sh `
+`sh run-translation.sh `
 
 *Note: The translation results have already been generated and saved in the `output` directory. Therefore, the scripts won't repeat the inference. If you want to regenerate the results, simply delete the contents within the `output` directory.*
 
