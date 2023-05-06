@@ -1,6 +1,6 @@
 ## 🗺️ MAPS: Multi-Aspect Prompting and Selection
 
-Implementaion of our [paper](https://arxiv.org/abs/tdb):
+Implementaion of our [paper](https://arxiv.org/abs/tdb) (arxiv soon):
 
 ```
 Exploring Human-Like Translation Strategy with Large Language Models
