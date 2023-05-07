@@ -124,7 +124,7 @@ demo_dict = {
             "JAS 39C 鹰狮战斗机=JAS 39C Gripen, 商业航班=commercial flights"
         ),
         (
-           "三个赛季前，28岁的比达尔（Vidal）从塞维利亚队加盟巴萨。",
+            "三个赛季前，28岁的比达尔（Vidal）从塞维利亚队加盟巴萨。",
             "巴萨=Barça, 塞维利亚队=Sevilla"
         ),
         (
@@ -132,7 +132,7 @@ demo_dict = {
             "白厅=Whitehall, 唐宁街=Downing Street, 首相官邸=Prime Minister's official residence"
         ),
         (
-           "雅虎和微软服务的用户总和，与美国在线的客户数不相上下。",
+            "雅虎和微软服务的用户总和，与美国在线的客户数不相上下。",
             "雅虎=Yahoo!, 微软=Microsofts"
         ),            
     ],
@@ -228,7 +228,7 @@ demo_dict = {
 
 def parse_args():
     parser = argparse.ArgumentParser("", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-w', "--workspace", type=str, default="/apdcephfs_cq2/share_916081/timurhe/maps", help="Workspace dir")
+    parser.add_argument('-w', "--workspace", type=str, default=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'), help="Workspace dir")
     parser.add_argument('-tn', "--test-name", type=str, required=True, help="wmt22/wmt21/...")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument('-s', "--src", type=str, required=True, help='source lang')

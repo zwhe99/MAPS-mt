@@ -2,12 +2,10 @@ import os
 import torch
 import json
 import random
-import tiktoken
 import logging
 import argparse
 import threading
 import numpy as np
-from bleurt import score as bleurt_score
 from sacrebleu.metrics import BLEU
 from comet import load_from_checkpoint, download_model
 
@@ -23,12 +21,6 @@ def seed_everything(TORCH_SEED):
 	torch.cuda.manual_seed_all(TORCH_SEED)
 	torch.backends.cudnn.deterministic = True
 	torch.backends.cudnn.benchmark = False
-
-def num_tokens_from_string(string: str, model_name: str) -> int:
-    """Returns the number of tokens in a text string."""
-    encoding = tiktoken.encoding_for_model(model_name)
-    num_tokens = len(encoding.encode(string))
-    return num_tokens
 
 def bleu(**kwargs):
     sys_lines = kwargs["sys_lines"]
@@ -172,6 +164,8 @@ def comet_qe(**kwargs):
     return final_scores
 
 def readlines(file_path):
+    if not file_path:
+        return []
     with open(file_path, 'r') as f:
         lines = f.readlines()
     return [l.strip() for l in lines]
@@ -182,13 +176,12 @@ def argmax(lst):
 def parse_args():
     parser = argparse.ArgumentParser("", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--seed", type=int)
-    parser.add_argument("--sys", nargs='+', required=True)
-    parser.add_argument("--src", type=str, required=True)
-    parser.add_argument("--ref", type=str, required=True)
-    parser.add_argument("--out", type=str, required=True)
-    parser.add_argument("--src-lang", type=str, required=True)
-    parser.add_argument("--tgt-lang", type=str, required=True)
-    parser.add_argument("--model-name", type=str, default="text-davinci-003")
+    parser.add_argument("--sys", nargs='+', required=True, help="candidates")
+    parser.add_argument("--src", type=str, required=True, help="source")
+    parser.add_argument("--ref", type=str, default=None, help="reference")
+    parser.add_argument("--out", type=str, required=True, help="output path")
+    parser.add_argument("--src-lang", type=str, required=True, help="source langauge code")
+    parser.add_argument("--tgt-lang", type=str, required=True, help="target langauge code")
 
     parser.add_argument("--comet-qe-model-name", type=str, default="wmt21-comet-qe-da")
     parser.add_argument("--comet-model-name", type=str, default="Unbabel/wmt22-comet-da")
@@ -207,7 +200,6 @@ def main(args):
     out_file_path = args.out
     src_lang = args.src_lang
     tgt_lang = args.tgt_lang
-    model_name = args.model_name
 
     comet_qe_model_name = args.comet_qe_model_name
     comet_model_name = args.comet_model_name
@@ -228,7 +220,8 @@ def main(args):
     ]
     src_lines = readlines(src_file_path)
     ref_lines = readlines(ref_file_path)
-    assert all([len(src_lines) == len(src_lines)] + [len(sys_lines) ==  len(src_lines) for sys_lines in sys_lines_lst])
+    assert metric in ["comet_qe", "randscore"] or len(ref_lines) > 0
+    assert all([len(sys_lines) ==  len(src_lines) for sys_lines in sys_lines_lst])
 
     combine_sys_lines = None
     metrics_lst = None
@@ -239,7 +232,6 @@ def main(args):
             "ref_lines": ref_lines,
             "src_lang": src_lang,
             "tgt_lang": tgt_lang,
-            "model_name": model_name,
             "comet_qe_model_name": comet_qe_model_name,
             "comet_model_name": comet_model_name,
             "comet_cache_dir": comet_cache_dir,

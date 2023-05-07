@@ -228,7 +228,7 @@ demo_dict = {
 
 def parse_args():
     parser = argparse.ArgumentParser("", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-w', "--workspace", type=str, default="/apdcephfs_cq2/share_916081/timurhe/maps", help="Workspace dir")
+    parser.add_argument('-w', "--workspace", type=str, default=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'), help="Workspace dir")
     parser.add_argument('-tn', "--test-name", type=str, required=True, help="wmt22/wmt21/...")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument('-s', "--src", type=str, required=True, help='source lang')
