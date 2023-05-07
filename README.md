@@ -15,7 +15,7 @@ Exploring Human-Like Translation Strategy with Large Language Models
 </p>
 The difference between machine and human translation in an English-Chinese example. Typical neural machine translation is a source-target mapping process, while human translators can take complex steps to ensure the quality and accuracy of the translation.
 
-`<br><br>`
+<br><br>
 
 **MAPS Framework**
 
@@ -34,7 +34,7 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
   ```shell
   wget https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-comet-qe-da.tar.gz
   tar -xf wmt21-comet-qe-da.tar.gz -C eval_ckpt/
-
+  
   wget https://storage.googleapis.com/bleurt-oss-21/BLEURT-20.zip .
   unzip -d eval_ckpt/ BLEURT-20.zip
   ```
