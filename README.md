@@ -73,3 +73,17 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
 ## Evaluation
 
 `sh run-evaluation.sh > evaluation.log`
+
+
+
+## Citaion
+
+```ruby
+@article{he2023exploring,
+  title={Exploring Human-Like Translation Strategy with Large Language Models},
+  author={He, Zhiwei and Liang, Tian and Jiao, Wenxiang and Zhang, Zhuosheng and Yang, Yujiu and Wang, Rui and Tu, Zhaopeng and Shi, Shuming and Wang, Xing},
+  journal={arXiv preprint arXiv:2305.04118},
+  year={2023}
+}
+```
+
