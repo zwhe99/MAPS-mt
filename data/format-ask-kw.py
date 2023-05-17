@@ -254,7 +254,7 @@ def main(args):
     with open(os.path.join(raw_dir, f"{test_name}.{src}-{tgt}.{src}")) as test_src_f:
 
         test_src_lines = [l.strip() for l in test_src_f.readlines()]
-        out_file_path = os.path.join(format_dir, f"{test_name}.{src}-{tgt}.{src}.5-shot.ask-kw")
+        out_file_path = os.path.join(format_dir, f"{test_name}.{src}-{tgt}.{src}.ask-kw")
 
         demos = demo_dict[(src, tgt)]
         with open(out_file_path, 'w') as out_f:

@@ -33,7 +33,7 @@ def main(args):
 
     # read files
     with open(os.path.join(raw_dir, f"{test_name}.{src}-{tgt}.{src}")) as test_src_f, \
-        open(os.path.join(model_out_dir, f"{test_name}.{src}-{tgt}.{src}.5-shot.ask-topic.trans")) as topic_f:
+        open(os.path.join(model_out_dir, f"{test_name}.{src}-{tgt}.{src}.ask-topic.trans")) as topic_f:
 
         test_src_lines = [l.strip() for l in test_src_f.readlines()]
         topic_lines = [l.strip() for l in topic_f.readlines()]

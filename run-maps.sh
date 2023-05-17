@@ -55,8 +55,8 @@ do
     do
         python3 $WS/model/openai/translate.py \
             --model-name $model_name \
-            -i $FORMAT/$test_name.$lp.$src.5-shot.ask-$know \
-            -o $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know.trans \
+            -i $FORMAT/$test_name.$lp.$src.ask-$know \
+            -o $OUTPUT/$model_name/$test_name.$lp.$src.ask-$know.trans \
             --temperature 0
     done
 done
@@ -74,12 +74,12 @@ do
     do
         python3 $WS/model/alpaca/translate.py \
             --model-name-or-path $ALPACA_CKPT \
-            -i $FORMAT/$test_name.$lp.$src.5-shot.ask-$know \
-            -o $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know \
+            -i $FORMAT/$test_name.$lp.$src.ask-$know \
+            -o $OUTPUT/$model_name/$test_name.$lp.$src.ask-$know \
             --search-algorithm beam \
             --batch $BS \
             --temperature 0
-        cat $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know | python3 $SCRIPT/alpaca-post-process.py > $OUTPUT/$model_name/$test_name.$lp.$src.5-shot.ask-$know.trans
+        cat $OUTPUT/$model_name/$test_name.$lp.$src.ask-$know | python3 $SCRIPT/alpaca-post-process.py > $OUTPUT/$model_name/$test_name.$lp.$src.ask-$know.trans
     done
 done
 # <<<<<<< Step1: Knowledge Minging <<<<<<<
