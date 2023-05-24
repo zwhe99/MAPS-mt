@@ -76,6 +76,12 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
 
 
 
+## Public Impact
+
+* Slator: [How Large Language Models Mimic the Human Translation Process](https://slator.com/how-large-language-models-mimic-human-translation-process/)
+
+
+
 ## Citaion
 
 ```ruby
