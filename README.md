@@ -1,4 +1,4 @@
-## 🗺️ MAPS: Multi-Aspect Prompting and Selection
+## 🗺️ MAPS: Multi-Aspect Prompting and Selection [![arXiv](https://img.shields.io/badge/arXiv-2305.04118-b31b1b.svg)](https://arxiv.org/abs/2305.04118)
 
 Implementaion of our [paper](https://arxiv.org/abs/2305.04118):
 
