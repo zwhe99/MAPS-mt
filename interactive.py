@@ -147,6 +147,7 @@ def main(args):
         if args.only_final:
             print(final_translaton)
         else:
+            print()
             print(f"Candidate_base: {candidate_base}\n")
             print(f"Keyword Pairs: {keywords}")
             print(f"Candidate_kw: {candidate_kw}\n")
