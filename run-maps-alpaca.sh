@@ -12,6 +12,7 @@ ALPACA_CKPT=YOUR_ALPACA_CKPT
 all_lang_pairs=(en-zh zh-en en-de de-en en-ja ja-en de-fr fr-de)
 test_name=wmt22
 BS=6
+KS_BS=400
 
 # >>>>>>> Step1: Knowledge Minging >>>>>>>
 for lp in ${all_lang_pairs[@]}
@@ -133,7 +134,7 @@ do
         --ref   $RAW/wmt22.$lp.$tgt \
         --out   $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.maps.0-seed.trans \
         --src-lang $src --tgt-lang $tgt \
-        -bs     400 \
+        -bs     $KS_BS \
         --metric comet_qe \
         --comet-qe-model-name wmt21-comet-qe-da
 
@@ -146,7 +147,7 @@ do
         --ref   $RAW/wmt22.$lp.$tgt \
         --out   $OUTPUT/alpaca-7b/wmt22.$lp.$tgt.maps_bound.0-seed.trans \
         --src-lang $src --tgt-lang $tgt \
-        -bs     400 \
+        -bs     $KS_BS \
         --metric comet \
         --comet-model-name Unbabel/wmt22-comet-da
 done

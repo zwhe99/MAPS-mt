@@ -10,7 +10,6 @@ SCRIPT=$WS/scripts
 MODEL=$WS/model
 all_lang_pairs=(en-zh zh-en en-de de-en en-ja ja-en de-fr fr-de)
 test_name=wmt22
-BS=6
 
 for lp in ${all_lang_pairs[@]}
 do
