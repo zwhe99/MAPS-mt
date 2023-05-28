@@ -5,7 +5,7 @@ Implementaion of our [paper](https://arxiv.org/abs/2305.04118):
 ```
 Exploring Human-Like Translation Strategy with Large Language Models
 ```
-
+<!-- good luck! -->
 ## MAPS
 
 **Motivation**
