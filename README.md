@@ -1,4 +1,4 @@
-## 🗺️ MAPS: Multi-Aspect Prompting and Selection [![arXiv](https://img.shields.io/badge/arXiv-2305.04118-b31b1b.svg)](https://arxiv.org/abs/2305.04118)
+## 🗺️ MAPS: Multi-Aspect Prompting and Selection
 
 Implementaion of our [paper](https://arxiv.org/abs/2305.04118):
 
@@ -56,29 +56,27 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
 **Preparation**
 
 * Set your openai API_KEY in `model/openai/translate.py`
-* Set Alpaca checkpoint file in `run-maps.sh` and `run-translation.sh`
+* Set Alpaca checkpoint file in `run-maps-alpaca.sh` and `run-translation-alpaca.sh`
 
 **Run MAPS**
 
-`sh run-maps.sh `
+* text-davinci-003: `sh run-maps.sh `
+* Alpaca: `sh run-maps-alpaca.sh `
 
 **Run other methods**
 
-`sh run-translation.sh `
+* text-davinci-003: `sh run-translation-003.sh `
+* Alpaca: `sh run-translation-alpaca.sh `
 
-*Note: The translation results have already been generated and saved in the `output` directory. Therefore, the scripts won't repeat the inference. If you want to regenerate the results, simply delete the contents within the `output` directory.*
+
+
+***Note**: The translation results have already been generated and saved in the `output` directory. Therefore, the scripts won't repeat the inference. If you want to regenerate the results, simply delete the contents within the `output` directory.*
 
 <br>
 
 ## Evaluation
 
 `sh run-evaluation.sh > evaluation.log`
-
-
-
-## Media Coverage
-
-* Slator: [How Large Language Models Mimic the Human Translation Process](https://slator.com/how-large-language-models-mimic-human-translation-process/)
 
 
 
