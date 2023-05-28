@@ -51,7 +51,7 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
 
 <br>
 
-## Reproduce
+## Reproduce the main results
 
 ### Run
 
@@ -70,8 +70,6 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
 * text-davinci-003: `sh run-translation-003.sh `
 * Alpaca: `sh run-translation-alpaca.sh `
 
-
-
 ***Note**: The translation results have already been generated and saved in the `output` directory. Therefore, the scripts won't repeat the inference. If you want to regenerate the results, simply delete the contents within the `output` directory.*
 
 <br>
@@ -80,7 +78,7 @@ MAPS aims to enable LLMs to mimic the human translation process by multi-aspect 
 
 `sh run-evaluation.sh > evaluation.log`
 
-
+<br>
 
 ## Interactive
 
