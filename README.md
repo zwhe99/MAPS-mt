@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="imgs/github.png" alt="Logo" width="200">
+</div>
+
 ## 🗺️ MAPS: Multi-Aspect Prompting and Selection
 
 Implementaion of our [paper](https://arxiv.org/abs/2305.04118):
@@ -5,7 +9,9 @@ Implementaion of our [paper](https://arxiv.org/abs/2305.04118):
 ```
 Exploring Human-Like Translation Strategy with Large Language Models
 ```
-<!-- good luck! -->
+
+
+
 ## MAPS
 
 **Motivation**
@@ -17,7 +23,7 @@ The difference between machine and human translation in an English-Chinese examp
 
 <br><br>
 
-**MAPS Framework**
+**Framework**
 
 <p align="center">
 <img src="imgs/method.png" alt="method"  width="800" />
