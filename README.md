@@ -2,9 +2,9 @@
   <img src="imgs/github.png" alt="Logo" width="200">
 </div>
 
-## 🗺️ MAPS: Multi-Aspect Prompting and Selection
+<h2 align="center">🗺️ MAPS: Multi-Aspect Prompting and Selection</h2>
 
-Implementaion of our [paper](https://arxiv.org/abs/2305.04118):
+**Implementaion of our [paper](https://arxiv.org/abs/2305.04118):**
 
 ```
 Exploring Human-Like Translation Strategy with Large Language Models
