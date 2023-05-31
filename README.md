@@ -96,6 +96,7 @@ wget https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-come
 tar -xf wmt21-comet-qe-da.tar.gz -C eval_ckpt/   
 conda create -n maps -c pytorch python==3.8.13 pytorch==2.0.0  
 conda activate maps
+pip3 install -r requirements.txt
 ```
 ```shell
 # Interactive
