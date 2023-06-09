@@ -10,7 +10,9 @@
 Exploring Human-Like Translation Strategy with Large Language Models
 ```
 
+🔥 **Update**
 
+* We now support translation between any pair of these languages: English, Chinese, Japanese, French, and German. 
 
 ## MAPS
 
@@ -132,4 +134,3 @@ Remember to set your openai API_KEY in `model/openai/translate.py`
   year={2023}
 }
 ```
-
