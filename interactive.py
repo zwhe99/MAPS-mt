@@ -2,12 +2,13 @@ import os
 import argparse
 from langcodes import Language
 from data import demo_ex_dict, kw_ex_dict, topic_ex_dict
+from data.trigger_sents import SUPPORT_LANGS
 from model.openai.translate import translate_with_backoff, api_key, model2max_context, num_tokens_from_string
 from comet import load_from_checkpoint, download_model
 from typing import List
 import logging
 
-SUPPORTED_LANG_PAIRS = ["en-de", "de-en", "en-zh", "zh-en", "en-ja", "ja-en", "de-fr", "fr-de"]
+SUPPORTED_LANG_PAIRS = [f"{s}-{t}"  for s in SUPPORT_LANGS for t in SUPPORT_LANGS if s != t]
 MODEL_NAME = "text-davinci-003" #TODO: support more models
 comet_model_mapping = {
     "wmt21-comet-qe-da": "wmt21-comet-qe-da/checkpoints/model.ckpt",
