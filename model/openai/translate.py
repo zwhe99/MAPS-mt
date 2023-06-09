@@ -6,7 +6,7 @@ import tiktoken
 from tqdm import tqdm
 import backoff
 
-api_key = "YOUR_API_KEY"
+api_key = "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"
 
 model2max_context = {
     "text-davinci-003": 4097,
@@ -69,6 +69,33 @@ def translate_with_backoff(smp, model_name, max_tokens, api_key, temperature):
 
         gen = post_procress(gen)
         return gen
+
+    except openai.error.RateLimitError as e:
+        if "You exceeded your current quota, please check your plan and billing details" in e.user_message:
+            raise OutOfQuotaException(api_key)
+        elif "Your access was terminated due to violation of our policies" in e.user_message:
+            raise AccessTerminatedException(api_key)
+        else:
+            raise e
+
+@backoff.on_exception(backoff.expo, (openai.error.OpenAIError, openai.error.RateLimitError, openai.error.APIError, openai.error.ServiceUnavailableError, openai.error.APIConnectionError), max_tries=5)
+def batch_translate_with_backoff(smp_lst, model_name, max_tokens, api_key, temperature):
+    try:
+        response = openai.Completion.create(
+            model=model_name, 
+            prompt=smp_lst,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            api_key=api_key,
+        )
+
+        gen_lst = [""] * len(smp_lst)
+        for choice in response.choices:
+            gen = choice.text
+            gen = post_procress(gen)  # Assuming your post_procress function can handle a single text
+            gen_lst[choice.index] = gen
+            
+        return gen_lst
 
     except openai.error.RateLimitError as e:
         if "You exceeded your current quota, please check your plan and billing details" in e.user_message:

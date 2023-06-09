@@ -1,12 +1,18 @@
 import os
-import argparse
-from langcodes import Language
-from data import demo_ex_dict, kw_ex_dict, topic_ex_dict
-from data.trigger_sents import SUPPORT_LANGS
-from model.openai.translate import translate_with_backoff, api_key, model2max_context, num_tokens_from_string
-from comet import load_from_checkpoint, download_model
-from typing import List
 import logging
+import argparse
+import warnings
+from typing import List
+from langcodes import Language
+from data.trigger_sents import SUPPORT_LANGS
+from comet import load_from_checkpoint, download_model
+from data import demo_ex_dict, kw_ex_dict, topic_ex_dict
+from model.openai.translate import api_key, model2max_context, num_tokens_from_string, batch_translate_with_backoff, translate_with_backoff
+from tabulate import tabulate
+from termcolor import colored
+import shutil
+
+warnings.filterwarnings("ignore", category=UserWarning, module="pytorch_lightning.trainer.setup")
 
 SUPPORTED_LANG_PAIRS = [f"{s}-{t}"  for s in SUPPORT_LANGS for t in SUPPORT_LANGS if s != t]
 MODEL_NAME = "text-davinci-003" #TODO: support more models
@@ -33,7 +39,17 @@ def query(prompt):
         temperature=0.0
     )
 
-def mine_keywords(source_sentence: str, src_lng: str, tgt_lng: str, src_full: str, tgt_full: str):
+def batch_query(prompts):
+    len_prompt = max([num_tokens_from_string(p, MODEL_NAME) for p in prompts])
+    return batch_translate_with_backoff(
+        prompts,
+        MODEL_NAME,
+        max_tokens=model2max_context[MODEL_NAME]-len_prompt,
+        api_key=api_key,
+        temperature=0.0
+    )
+
+def mine_keywords_prompt(source_sentence: str, src_lng: str, tgt_lng: str, src_full: str, tgt_full: str):
     ex = kw_ex_dict[(src_lng, tgt_lng)]
     all_items = ex + [(source_sentence, None)]
     prompt_lst = []
@@ -45,9 +61,9 @@ def mine_keywords(source_sentence: str, src_lng: str, tgt_lng: str, src_full: st
         prompt_lst.append(s)
 
     prompt = "\n\n".join(prompt_lst)
-    return query(prompt)
+    return prompt
 
-def mine_topics(source_sentence: str, src_lng: str, tgt_lng: str):
+def mine_topics_prompt(source_sentence: str, src_lng: str, tgt_lng: str):
     ex = topic_ex_dict[(src_lng, tgt_lng)]
     all_items = ex + [(source_sentence, None)]
     prompt_lst = []
@@ -59,9 +75,9 @@ def mine_topics(source_sentence: str, src_lng: str, tgt_lng: str):
         prompt_lst.append(s)
 
     prompt = "\n\n".join(prompt_lst)
-    return query(prompt)
+    return prompt
 
-def mine_demo(source_sentence: str, src_lng: str, tgt_lng: str, src_full: str, tgt_full: str):
+def mine_demo_prompt(source_sentence: str, src_lng: str, tgt_lng: str, src_full: str, tgt_full: str):
     ex = demo_ex_dict[(src_lng, tgt_lng)]
     all_items = ex + [(source_sentence, None, None)]
     prompt_lst = []
@@ -73,26 +89,35 @@ def mine_demo(source_sentence: str, src_lng: str, tgt_lng: str, src_full: str, t
         prompt_lst.append(s)
 
     prompt = "\n\n".join(prompt_lst)
-    return query(prompt)
+    return prompt
 
 def mine_knowledge(source_sentence: str, src_lng: str, tgt_lng: str, src_full: str, tgt_full: str):
-    keywords = mine_keywords(source_sentence, src_lng, tgt_lng, src_full, tgt_full)
-    topics = mine_topics(source_sentence, src_lng, tgt_lng)
-    demo = mine_demo(source_sentence, src_lng, tgt_lng, src_full, tgt_full)
-    return keywords, topics, demo
+    prompts = []
+    prompts.append(mine_keywords_prompt(source_sentence, src_lng, tgt_lng, src_full, tgt_full))
+    prompts.append(mine_topics_prompt(source_sentence, src_lng, tgt_lng))
+    prompts.append(mine_demo_prompt(source_sentence, src_lng, tgt_lng, src_full, tgt_full))
+    return batch_query(prompts)
 
-def translate_with_knowledge(knowledge_type: str, knowledge_content: str, source_sentence: str, src_full: str, tgt_full: str):
+def knowledge_integration(source_sentence: str, src_full: str, tgt_full: str, keywords: str, topics: str, demo: str):
+    prompts = []
+    prompts.append(translate_prompt(source_sentence, src_full, tgt_full))
+    prompts.append(translate_with_knowledge_prompt("Keyword Pairs", keywords, source_sentence, src_full, tgt_full))
+    prompts.append(translate_with_knowledge_prompt("Topics", topics, source_sentence, src_full, tgt_full))
+    prompts.append(translate_with_knowledge_prompt(f"Related {src_full}-{tgt_full} sentence pairs", demo, source_sentence, src_full, tgt_full))
+    return batch_query(prompts)
+
+def translate_with_knowledge_prompt(knowledge_type: str, knowledge_content: str, source_sentence: str, src_full: str, tgt_full: str):
     prompt = f"{knowledge_type}: {knowledge_content}\n\n" + \
         f"Instruction: Given the above knowledge, translate the following {src_full} text into {tgt_full}.\n" + \
         f"{src_full}: {source_sentence}\n" + \
         f"{tgt_full}:"
-    return query(prompt)
+    return prompt
 
-def translate(source_sentence: str, src_full: str, tgt_full: str):
+def translate_prompt(source_sentence: str, src_full: str, tgt_full: str):
     prompt = f"Instruction: Translate the following {src_full} text into {tgt_full}.\n" + \
         f"{src_full}: {source_sentence}\n" + \
         (f"{tgt_full}:")
-    return query(prompt)
+    return prompt
 
 def comet_qe(comet_model, source_sentence: str, translation_candidates: List[str], use_gpu: bool):
     data = []
@@ -134,10 +159,7 @@ def main(args):
         keywords, topics, demo = mine_knowledge(source_sentence, src_lng, tgt_lng, src_full, tgt_full)
 
         # knowledge integration
-        candidate_base = translate(source_sentence, src_full, tgt_full)
-        candidate_kw = translate_with_knowledge("Keyword Pairs", keywords, source_sentence, src_full, tgt_full)
-        candidate_topic = translate_with_knowledge("Topics", topics, source_sentence, src_full, tgt_full)
-        candidate_demo = translate_with_knowledge(f"Related {src_full}-{tgt_full} sentence pairs", demo, source_sentence, src_full, tgt_full)
+        candidate_base, candidate_kw, candidate_topic, candidate_demo = knowledge_integration(source_sentence, src_full, tgt_full, keywords, topics, demo)
 
         # knowledge selection
         candidates = [candidate_base, candidate_kw, candidate_topic, candidate_demo]
@@ -148,15 +170,21 @@ def main(args):
         if args.only_final:
             print(final_translaton)
         else:
-            print()
-            print(f"Candidate_base: {candidate_base}\n")
-            print(f"Keyword Pairs: {keywords}")
-            print(f"Candidate_kw: {candidate_kw}\n")
-            print(f"Topics: {topics}")
-            print(f"Candidate_topic: {candidate_topic}\n")
-            print(f"Related {src_full}-{tgt_full} sentence pairs: {demo}")
-            print(f"Candidate_demo: {candidate_demo}\n")
-            print(f"Final output: {final_translaton}")
+            table = [
+                [colored("Keywords", 'light_red'), f"{keywords}"],
+                [colored("Topics", 'light_green'), f"{topics}"],
+                [colored("Demo", 'light_yellow'), f"{demo}"],
+                ["----", "--"],
+                [colored("Cand Kw", 'light_red'), f"{candidate_kw}"],
+                [colored("Cand Topic", 'light_green'), f"{candidate_topic}"],
+                [colored("Cand Demo", 'light_yellow'), f"{candidate_demo}"],
+                ["Cand Base", f"{candidate_base}"],
+                ["----", "--"],
+                ["Final", colored(f"{final_translaton}", attrs=["bold"])],
+            ]
+            width = min(shutil.get_terminal_size().columns-18, 120)
+            print(tabulate(table, tablefmt='fancy_grid', maxcolwidths=[None, width]))
+
 
 if __name__ == "__main__":
     args = parse_args()
