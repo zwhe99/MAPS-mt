@@ -12,6 +12,7 @@ Exploring Human-Like Translation Strategy with Large Language Models
 
 🔥 **Update**
 
+* `interactive.py` now enables running of MAPS-mt in an interactive mode.
 * We now support translation between any pair of these languages: English, Chinese, Japanese, French, and German. 
 
 ## MAPS
@@ -105,20 +106,13 @@ pip3 install -r requirements.txt
 (maps) zwhe@zhiweideMacBook-Pro MAPS-mt % python3 interactive.py --lang-pair en-zh
 
 Enter source English sentence: Joint Aid for Dogs is a high specification joint and muscle supplement with glucosamine for dogs, designed to aid freedom of movement.
-
-Candidate_base: 联合援助犬是一种高规格的联合肌肉补充剂，含有用于狗的葡萄糖胺，旨在帮助自由运动。
-
-Keyword Pairs: Joint Aid for Dogs=联合救助犬, glucosamine=葡糖胺
-Candidate_kw: 联合救助犬是一种高规格的关节和肌肉补充剂，含有葡糖胺，旨在帮助犬类自由活动。
-
-Topics: Animal care
-Candidate_topic: Joint Aid for Dogs 是一种高规格的膝关节和肌肉补充剂，含有用于狗的葡糖胺，旨在帮助它们自由活动。
-
-Related English-Chinese sentence pairs: Joint Aid for Dogs also contains chondroitin, which helps to maintain healthy joint cartilage and reduce inflammation.  Joint Aid for Dogs还含有胶原蛋白，有助于维持健康的关节软骨，减少炎症。
-Candidate_demo: Joint Aid for Dogs是一种高规格的关节和肌肉补充剂，含有用于狗的葡糖胺，旨在帮助自由运动。
-
-Final output: Joint Aid for Dogs 是一种高规格的膝关节和肌肉补充剂，含有用于狗的葡糖胺，旨在帮助它们自由活动。
 ```
+
+**Output:**
+
+<p align="center">
+<img src="imgs/case-output.png" alt="method"  width="1000" />
+</p>
 
 Remember to set your openai API_KEY in `model/openai/translate.py`
 
