@@ -40,6 +40,8 @@ def query(prompt):
     )
 
 def batch_query(prompts):
+    if len(prompts) == 0:
+        return []
     len_prompt = max([num_tokens_from_string(p, MODEL_NAME) for p in prompts])
     return batch_translate_with_backoff(
         prompts,
