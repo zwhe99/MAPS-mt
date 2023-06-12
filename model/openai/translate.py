@@ -6,7 +6,7 @@ import tiktoken
 from tqdm import tqdm
 import backoff
 
-api_key = "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"
+api_key = "YOUR OPENAI API KEY"
 
 model2max_context = {
     "text-davinci-003": 4097,
