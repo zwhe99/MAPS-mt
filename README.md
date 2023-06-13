@@ -12,8 +12,10 @@ Exploring Human-Like Translation Strategy with Large Language Models
 
 🔥 **Update**
 
-* `interactive.py` now enables running of MAPS-mt in an interactive mode.
-* We now support translation between any pair of these languages: English, Chinese, Japanese, French, and German. 
+* **[June 14, 2023]**: This work now has a demo website. [Try it](https://zwhe99.github.io/maps-mt/)!
+
+* **[June 10, 2023]**: `interactive.py` now enables running of MAPS-mt in an interactive mode.
+* **[June 10, 2023]**: We now support translation between any pair of these languages: English, Chinese, Japanese, French, and German.
 
 ## MAPS
 
@@ -113,8 +115,9 @@ Enter source English sentence: Joint Aid for Dogs is a high specification joint 
 <p align="center">
 <img src="imgs/case-output.png" alt="method"  width="1000" />
 </p>
-
 Remember to set your openai API_KEY in `model/openai/translate.py`
+
+You can also take a look at the [demo website](https://zwhe99.github.io/maps-mt/)).
 
 
 
