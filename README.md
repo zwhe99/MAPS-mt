@@ -115,10 +115,7 @@ Enter source English sentence: Joint Aid for Dogs is a high specification joint 
 <p align="center">
 <img src="imgs/case-output.png" alt="method"  width="1000" />
 </p>
-Remember to set your openai API_KEY in `model/openai/translate.py`
-
-
-
+Remember to set your openai API_KEY in `model/openai/translate.py`.
 You can also take a look at the [demo website](https://zwhe99.github.io/maps-mt/).
 
 
