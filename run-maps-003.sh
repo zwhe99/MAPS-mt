@@ -79,14 +79,6 @@ do
             --seed 0 \
             -s $src \
             -t $tgt
-
-        python3 $DATA/format-$know.py \
-            -w $WS \
-            -tn wmt22 \
-            -m alpaca-7b \
-            --seed 0 \
-            -s $src \
-            -t $tgt
     done
 done
 
