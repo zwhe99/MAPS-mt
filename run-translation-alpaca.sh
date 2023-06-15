@@ -18,7 +18,7 @@ for lp in ${all_lang_pairs[@]}
 do
     src=${lp%%-*}
     tgt=${lp##*-}
-    python3 $DATA/format-base.py \
+    python3 $DATA/format_base.py \
         -w $WS \
         -tn wmt22 \
         --seed 0 \
