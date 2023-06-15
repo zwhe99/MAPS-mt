@@ -21,21 +21,21 @@ do
     src=${lp%%-*}
     tgt=${lp##*-}
 
-    python3 $DATA/format-ask-kw.py \
+    python3 $DATA/format_ask_kw.py \
         -w $WS \
         -tn wmt22 \
         --seed 0 \
         -s $src \
         -t $tgt
 
-    python3 $DATA/format-ask-topic.py \
+    python3 $DATA/format_ask_topic.py \
         -w $WS \
         -tn wmt22 \
         --seed 0 \
         -s $src \
         -t $tgt
 
-    python3 $DATA/format-ask-demo.py \
+    python3 $DATA/format_ask_demo.py \
         -w $WS \
         -tn wmt22 \
         --seed 0 \
