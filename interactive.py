@@ -1,4 +1,5 @@
 import os
+import difflib
 import logging
 import argparse
 import warnings
@@ -16,6 +17,11 @@ warnings.filterwarnings("ignore", category=UserWarning, module="pytorch_lightnin
 
 SUPPORTED_LANG_PAIRS = [f"{s}-{t}"  for s in SUPPORT_LANGS for t in SUPPORT_LANGS if s != t]
 MODEL_NAME = "text-davinci-003" #TODO: support more models
+KNOW2COLOR = {
+    "Keywords": 'light_red',
+    "Topics": 'light_green',
+    "Demo": 'light_yellow',
+}
 comet_model_mapping = {
     "wmt21-comet-qe-da": "wmt21-comet-qe-da/checkpoints/model.ckpt",
 }
@@ -134,6 +140,48 @@ def comet_qe(comet_model, source_sentence: str, translation_candidates: List[str
 def argmax(lst):
     return lst.index(max(lst))
 
+def find_diff_str(str1: str, str2: str, know_name: str, language: str) -> str:
+    """Highlight the differecnt part in `str`
+
+    Args:
+        str1 (str): the reference string, i.e., the base candidates
+        str2 (str): input string
+        know_name (str): string of knowledge, should be in `KNOWS`
+        language (str): the language full name
+
+    Returns:
+        str: highlighted str2
+    """
+    d = difflib.Differ()
+
+    # helper function to process diffs
+    def process_diff(diff):
+        result = []
+        for fragment in diff:
+            if fragment[0] == ' ':
+                result.append(fragment[2:])  # Keep unchanged parts
+            elif fragment[0] == '-':
+                continue  # Discard parts in str1 not in str2
+            elif fragment[0] == '+':
+                # Highlight additions from str2 not in str1
+                result.append(colored(fragment[2:], KNOW2COLOR[know_name]))
+        return result
+
+    if language in ['English', 'German']:
+        # split the input strings into word lists
+        str1_list = str1.split()
+        str2_list = str2.split()
+        diff = d.compare(str1_list, str2_list)
+        result = process_diff(diff)
+        result = ' '.join(result)
+
+    else:
+        diff = d.compare(str1, str2)
+        result = process_diff(diff)
+        result = ''.join(result)
+
+    return result
+
 def main(args):
     src_lng, tgt_lng = args.lang_pair.split('-')
     src_full = Language.make(language=src_lng).display_name()
@@ -173,13 +221,13 @@ def main(args):
             print(final_translaton)
         else:
             table = [
-                [colored("Keywords", 'light_red'), f"{keywords}"],
-                [colored("Topics", 'light_green'), f"{topics}"],
-                [colored("Demo", 'light_yellow'), f"{demo}"],
+                [colored("Keywords", KNOW2COLOR["Keywords"]), f"{keywords}"],
+                [colored("Topics", KNOW2COLOR["Topics"]), f"{topics}"],
+                [colored("Demo", KNOW2COLOR["Demo"]), f"{demo}"],
                 ["----", "--"],
-                [colored("Cand Kw", 'light_red'), f"{candidate_kw}"],
-                [colored("Cand Topic", 'light_green'), f"{candidate_topic}"],
-                [colored("Cand Demo", 'light_yellow'), f"{candidate_demo}"],
+                [colored("Cand Kw", KNOW2COLOR["Keywords"]), f"{find_diff_str(candidate_base, candidate_kw, 'Keywords', tgt_full)}"],
+                [colored("Cand Topic", KNOW2COLOR["Topics"]), f"{find_diff_str(candidate_base, candidate_topic, 'Topics', tgt_full)}"],
+                [colored("Cand Demo", KNOW2COLOR["Demo"]), f"{find_diff_str(candidate_base, candidate_demo, 'Demo', tgt_full)}"],
                 ["Cand Base", f"{candidate_base}"],
                 ["----", "--"],
                 ["Final", colored(f"{final_translaton}", attrs=["bold"])],
