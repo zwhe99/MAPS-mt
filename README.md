@@ -121,7 +121,7 @@ You can also take a look at the [demo website](https://zwhe99.github.io/maps-mt/
 
 
 
-## Citaion
+## Citation
 
 ```ruby
 @article{he2023exploring,
