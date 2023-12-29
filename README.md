@@ -12,7 +12,7 @@ Exploring Human-Like Translation Strategy with Large Language Models
 
 🔥 **Update**
 
-* **[June 14, 2023]**: This work now has a <a href="https://zwhe99.github.io/maps-mt/" style="display: inline-block; text-align: center;"><img alt="Demo" src="https://img.shields.io/badge/%F0%9F%A4%97-Demo-blue"></a>. [Try it](https://zwhe99.github.io/maps-mt/)!
+* **[June 14, 2023]**: This work now has a <a href="[https://zwhe99.github.io/maps-mt/](https://huggingface.co/spaces/zwhe99/MAPS-mt)" style="display: inline-block; text-align: center;"><img alt="Demo" src="https://img.shields.io/badge/%F0%9F%A4%97-Demo-blue"></a>. [Try it]([https://zwhe99.github.io/maps-mt/](https://huggingface.co/spaces/zwhe99/MAPS-mt))!
 
 * **[June 10, 2023]**: `interactive.py` now enables running of MAPS-mt in an interactive mode.
 * **[June 10, 2023]**: We now support translation between any pair of these languages: English, Chinese, Japanese, French, and German.
